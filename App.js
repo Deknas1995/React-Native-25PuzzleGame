@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import "react-native-gesture-handler"; // Must be at the top for gesture handling
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Level1 from "./Screens/Level1";
+import Level2 from "./Screens/Level2";
+import Level3 from "./Screens/Level3";
+import Level4 from "./Screens/Level4";
+import Level5 from "./Screens/Level5";
+
+const Stack = createStackNavigator(); // Create a Stack Navigator
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Level 4"
+        screenOptions={{ headerShown: true, headerLeft: null }}
+      >
+        <Stack.Screen name="Level 1" component={Level1} />
+        <Stack.Screen name="Level 2" component={Level2} />
+        <Stack.Screen name="Level 3" component={Level3} />
+        <Stack.Screen name="Level 4" component={Level4} />
+        <Stack.Screen name="Level 5" component={Level5} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
