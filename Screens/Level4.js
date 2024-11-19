@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-//import Sound from "react-native-sound";
-import btnSound from '../Sounds/btn_sound.wav';
+import { Audio } from 'expo-av';
 
-//const buttonPressSound = new Sound('../Sounds/btn_sound.wav', Sound.MAIN_BUNDLE, (erro) => {
-//  if(error){
-//    console.log("Failed to load the sound", error);
-// }
-//})
+// Import sounds
+import btnSound from '../Sounds/btn_sound.wav';
+import wrongSound from '../Sounds/btn_click.mp3';
+
+const playSound = async (soundFile) => {
+  const { sound } = await Audio.Sound.createAsync(soundFile);
+  await sound.playAsync();
+};
+
 
 export default function Level4({ navigation }) {
   const [btnPressed, setBtnPressed] = useState(null);
@@ -20,10 +23,9 @@ export default function Level4({ navigation }) {
 
   const handleButtonPress = (btnVal) => {
 
-    //buttonPressSound.play();
-    new Audio(btnSound).play();
-
     if (btnVal === correctSequence[currentIndex]) {
+      playSound(btnSound); // Play correct button sound
+
       setInputValue((prevValue) => prevValue + btnVal.toString());
       setCurrentIndex((prevIndex) => prevIndex + 1);
       setDisplayCorrect(true);
@@ -39,6 +41,8 @@ export default function Level4({ navigation }) {
       }, 300);
 
     } else {
+      playSound(wrongSound); // Play wrong button sound
+
       setCurrentIndex(0);
       setInputValue("WRONG!");
       setDisplayError(true);
@@ -47,7 +51,6 @@ export default function Level4({ navigation }) {
       setTimeout(() => {
         setDisplayError(false);
         setInputValue("");
-        setError(null);
       }, 500);
     }
   };
@@ -64,7 +67,7 @@ export default function Level4({ navigation }) {
         <View
           style={[
             styles.display,
-            displayError && styles.displayError, // Add error style if displayError is true
+            displayError && styles.displayError,
             displayCorrect && styles.displayCorrect,
           ]}
         >
