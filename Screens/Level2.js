@@ -19,16 +19,16 @@ export default function Level2({ navigation }) {
   );
 }
 
-// Add basic styling for the component
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    flex: 1, // Makes the container take up the full height of the screen
-    justifyContent: "center", // Centers content vertically
-    alignItems: "center", // Centers content horizontally
+    flex: 1,
+    justifyContent: "center", 
+    alignItems: "center", 
   },
   title: {
     fontSize: 20,
-    textAlign: "center", // Centers text inside the Text component
+    textAlign: "center", 
   },
 });
