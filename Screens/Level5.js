@@ -6,10 +6,11 @@ import {
   PanResponder,
   Platform,
   Text,
+  Dimensions,
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-export default function Level5() {
+export default function Level5({ navigation }) {
   const pan = useRef(new Animated.ValueXY()).current;
   const [lastTap, setLastTap] = useState(null);
   const disableResetRef = useRef(false); // Use ref instead of state for immediate updates
@@ -18,7 +19,7 @@ export default function Level5() {
 
   const panResponder = useRef(
     PanResponder.create({
-      onStartShouldSetPanResponder: () => true, // Allow pan responder to start
+      onStartShouldSetPanResponder: () => true,
       onPanResponderGrant: () => {
         // Ensure the pan value is updated to match the box's current position
         pan.setOffset({
@@ -27,9 +28,13 @@ export default function Level5() {
         });
         pan.setValue({ x: 0, y: 0 }); // Reset animated value to zero for smooth dragging
       },
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
-        useNativeDriver: false,
-      }),
+      onPanResponderMove: Animated.event(
+        [
+          null,
+          { dx: pan.x, dy: pan.y }, // Map gesture movement to the animated values
+        ],
+        { useNativeDriver: false }
+      ),
       onPanResponderRelease: () => {
         if (!disableResetRef.current) {
           console.log("reset");
@@ -53,7 +58,6 @@ export default function Level5() {
     const DOUBLE_PRESS_DELAY = 300;
 
     if (lastTap && now - lastTap < DOUBLE_PRESS_DELAY) {
-      console.log("disable reset true");
       disableResetRef.current = true; // Update ref value immediately
     } else {
       setLastTap(now);
@@ -70,16 +74,11 @@ export default function Level5() {
     const boxY = boxPosition.current.y;
 
     console.log("X = " + boxX + " Y = " + boxY);
-    // Check if the box is within the target box's boundaries
-    if (
-      boxX >= targetPosition.current.x &&
-      boxX <= targetPosition.current.x + targetSize - boxSize &&
-      boxY >= targetPosition.current.y &&
-      boxY <= targetPosition.current.y + targetSize - boxSize
-    ) {
+    const placeArea = Dimensions.get("window").height / 2.14;
+    console.log("boxY + placeArea = " + (boxY + placeArea));
+    if (boxY + placeArea < 0) {
       console.log("Box placed in target. Navigating to next level.");
-      // You can call navigation here to move to the next level
-      // navigation.navigate("NextLevel");
+      navigation.navigate("Level 6");
     }
   };
 
@@ -98,19 +97,20 @@ export default function Level5() {
         onLayout={handleTargetLayout} // Capture the position of the target box
       >
         <Text style={styles.targetText}>Place the box here</Text>
-        <View style={styles.targetBox} />
+        <View
+          style={[styles.targetBox, { width: Dimensions.get("window").width }]}
+        />
       </View>
 
-      <TouchableWithoutFeedback onPress={handleDoublePress}>
-        <Animated.View
-          style={[
-            styles.box,
-            { transform: pan.getTranslateTransform() },
-            Platform.OS === "web" ? { cursor: "grab" } : {},
-          ]}
-          {...panResponder.panHandlers}
-        />
-      </TouchableWithoutFeedback>
+      <Animated.View
+        onTouchStart={handleDoublePress}
+        {...panResponder.panHandlers}
+        style={[
+          styles.box,
+          { transform: pan.getTranslateTransform() },
+          Platform.OS === "web" ? { cursor: "grab" } : {},
+        ]}
+      />
     </View>
   );
 }
@@ -132,8 +132,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   targetBox: {
-    width: 120,
-    height: 120,
+    height: 280,
+    marginBottom: 220,
     backgroundColor: "#FFD700",
     borderRadius: 10,
     borderWidth: 2,
