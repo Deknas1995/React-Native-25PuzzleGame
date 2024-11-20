@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "GameApp",
-    "slug": "GameApp",
+    "name": "10LevelGameApp",
+    "slug": "10LevelGameApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -5,7 +5,7 @@ export default function Level2({ navigation }) {
   return (
     <View style={styles.container}>
       <Pressable>
-        <Text style={styles.title}>Press </Text>
+        <Text style={styles.title}>Press</Text>
       </Pressable>
 
       <Pressable onPress={() => navigation.navigate("Level 3")}>
