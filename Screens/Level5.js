@@ -13,6 +13,7 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 export default function Level5({ navigation }) {
   const pan = useRef(new Animated.ValueXY()).current;
   const [lastTap, setLastTap] = useState(null);
+
   const disableResetRef = useRef(false); // Use ref instead of state for immediate updates
   const targetPosition = useRef({ x: 0, y: 0 }); // Use ref to track the target box's position
   const boxPosition = useRef({ x: 0, y: 0 }); // Track the draggable box's position
@@ -93,13 +94,15 @@ export default function Level5({ navigation }) {
     <View style={styles.container}>
       {/* Target box */}
       <View
-        style={styles.targetContainer}
+        style={[
+          styles.targetContainer,
+          styles.targetBox,
+          { width: Dimensions.get("window").width },
+        ]}
         onLayout={handleTargetLayout} // Capture the position of the target box
       >
         <Text style={styles.targetText}>Place the box here</Text>
-        <View
-          style={[styles.targetBox, { width: Dimensions.get("window").width }]}
-        />
+        <View />
       </View>
 
       <Animated.View
@@ -109,6 +112,7 @@ export default function Level5({ navigation }) {
           styles.box,
           { transform: pan.getTranslateTransform() },
           Platform.OS === "web" ? { cursor: "grab" } : {},
+          
         ]}
       />
     </View>
@@ -132,6 +136,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   targetBox: {
+    width: "100%",
     height: 280,
     marginBottom: 220,
     backgroundColor: "#FFD700",
@@ -144,12 +149,16 @@ const styles = StyleSheet.create({
   box: {
     width: 100,
     height: 100,
-    backgroundColor: "#4CAF50",
+    backgroundColor: "rgb(0,200,0)",
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "rgb(200,100,200)",
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5, // For Android shadow
   },
+  pressed:{
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    backgroundColor: "rgb(244,0,0)",
+  }
 });

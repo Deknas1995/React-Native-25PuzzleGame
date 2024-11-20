@@ -8,6 +8,7 @@ import Level3 from "./Screens/Level3";
 import Level4 from "./Screens/Level4";
 import Level5 from "./Screens/Level5";
 import Level6 from "./Screens/Level6";
+import Level7 from "./Screens/Level7";
 
 const Stack = createStackNavigator(); // Create a Stack Navigator
 
@@ -15,7 +16,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Level 5"
+        initialRouteName="Level 6"
         screenOptions={{ headerShown: true, headerLeft: null }}
       >
         <Stack.Screen name="Level 1" component={Level1} />
@@ -24,6 +25,7 @@ export default function App() {
         <Stack.Screen name="Level 4" component={Level4} />
         <Stack.Screen name="Level 5" component={Level5} />
         <Stack.Screen name="Level 6" component={Level6} />
+        <Stack.Screen name="Level 7" component={Level7} />
       </Stack.Navigator>
     </NavigationContainer>
   );
